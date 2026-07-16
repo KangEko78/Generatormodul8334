@@ -1,0 +1,6 @@
+{
+  "name": "Asisten Guru Informatika SMP",
+  "description": "Asisten AI untuk menyusun Modul Ajar Informatika SMP Fase D (Kelas 7, 8, 9) berbasis Kurikulum Merdeka CP 2026 dan format Pembelajaran Mendalam (8334).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

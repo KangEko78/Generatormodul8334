@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom rich styling for the generated Modul Ajar document container */
+.markdown-body {
+  font-family: var(--font-sans);
+  color: #1f2937;
+  line-height: 1.7;
+}
+
+.markdown-body h1 {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.25rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body h4 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1rem;
+}
+
+.markdown-body ul, .markdown-body ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li {
+  margin-bottom: 0.375rem;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.markdown-body th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+}
+
+.markdown-body td {
+  border: 1px solid #e2e8f0;
+  padding: 0.625rem 0.75rem;
+}
+
+.markdown-body tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid #38bdf8;
+  background-color: #f8fafc;
+  padding: 0.75rem 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 1rem;
+  font-style: italic;
+  border-radius: 0.25rem;
+}
+
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background-color: #f3f4f6;
+  color: #ef4444;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
+.markdown-body pre {
+  background-color: #1e293b;
+  color: #f8fafc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdown-body pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+/* Print CSS optimization */
+@page {
+  size: A4 portrait;
+  margin: 20mm 15mm 20mm 15mm;
+}
+
+@media print {
+  /* Reset body and html for print flow */
+  html, body {
+    background-color: white !important;
+    color: black !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    font-family: "Inter", sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide navigation, sidebars, buttons and other UI clutter */
+  .no-print, 
+  header, 
+  footer, 
+  aside,
+  button,
+  select,
+  input,
+  textarea {
+    display: none !important;
+  }
+
+  /* Force the layout containers to be clean blocks without grids, side-paddings, or shadows */
+  main {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  section.print-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* Target the main document frame container inside the print-container */
+  .print-container > div {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    height: auto !important;
+  }
+
+  /* Target the document body area (scrollable on screen, but must be fully visible and auto-height on print) */
+  .print-content-body {
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  /* Ensure rich styling translates cleanly on black & white or color paper */
+  .markdown-body {
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+  }
+
+  .markdown-body h1 {
+    font-size: 18pt !important;
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+    margin-top: 24pt !important;
+    margin-bottom: 12pt !important;
+    padding-bottom: 6pt !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .markdown-body h2 {
+    font-size: 14pt !important;
+    color: #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+    margin-top: 18pt !important;
+    margin-bottom: 8pt !important;
+    padding-bottom: 4pt !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .markdown-body h3 {
+    font-size: 12pt !important;
+    color: #000000 !important;
+    margin-top: 14pt !important;
+    margin-bottom: 6pt !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .markdown-body p, 
+  .markdown-body li, 
+  .markdown-body table, 
+  .markdown-body tr,
+  .markdown-body blockquote,
+  .markdown-body pre {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Page break rules */
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* Halaman Pengesahan must be kept together at the end, and never cut in half */
+  .break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-top: 50px !important;
+  }
+}
+

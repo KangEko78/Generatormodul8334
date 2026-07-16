@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Profile and school settings of the teacher",
+      "type": "object",
+      "properties": {
+        "namaSekolah": {
+          "type": "string",
+          "maxLength": 150,
+          "description": "Name of the school"
+        },
+        "kabupaten": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Name of the city or district"
+        },
+        "namaGuru": {
+          "type": "string",
+          "maxLength": 150,
+          "description": "Name of the teacher"
+        },
+        "nipGuru": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "NIP ID of the teacher"
+        },
+        "namaKepalaSekolah": {
+          "type": "string",
+          "maxLength": 150,
+          "description": "Name of the school principal"
+        },
+        "nipKepalaSekolah": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "NIP ID of the school principal"
+        },
+        "tanggalDokumen": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Default document sign-off date/period"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["namaSekolah", "kabupaten", "namaGuru", "nipGuru", "namaKepalaSekolah", "nipKepalaSekolah", "tanggalDokumen"]
+    },
+    "ModulAjar": {
+      "title": "ModulAjar",
+      "description": "A generated Modul Ajar document",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Unique identifier of the modul"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Title of the modul"
+        },
+        "grade": {
+          "type": "string",
+          "enum": ["VII", "VIII", "IX"],
+          "description": "Grade/Class"
+        },
+        "materi": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Learning material/topic"
+        },
+        "model": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Learning model name"
+        },
+        "semester": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Semester details"
+        },
+        "alokasi": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Allocation of time"
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 100000,
+          "description": "Markdown body content of the modul"
+        },
+        "customDirectives": {
+          "type": "string",
+          "maxLength": 1000,
+          "description": "Optional custom prompt directives"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Formatted date string when this modul was created"
+        }
+      },
+      "required": ["id", "title", "grade", "materi", "model", "semester", "alokasi", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Stores user profiles"
+    },
+    "/users/{userId}/moduls/{modulId}": {
+      "schema": "ModulAjar",
+      "description": "Stores generated Modul Ajars for each user"
+    }
+  }
+}

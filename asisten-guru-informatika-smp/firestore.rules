@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isEmailVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Entity Validations
+    function isValidUserProfile(data) {
+      return data.namaSekolah is string && data.namaSekolah.size() <= 150 &&
+             data.kabupaten is string && data.kabupaten.size() <= 100 &&
+             data.namaGuru is string && data.namaGuru.size() <= 150 &&
+             data.nipGuru is string && data.nipGuru.size() <= 50 &&
+             data.namaKepalaSekolah is string && data.namaKepalaSekolah.size() <= 150 &&
+             data.nipKepalaSekolah is string && data.nipKepalaSekolah.size() <= 50 &&
+             data.tanggalDokumen is string && data.tanggalDokumen.size() <= 50 &&
+             (!data.keys().hasAny(['updatedAt']) || data.updatedAt is string);
+    }
+
+    function isValidModulAjar(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.grade is string && (data.grade == "VII" || data.grade == "VIII" || data.grade == "IX") &&
+             data.materi is string && data.materi.size() <= 300 &&
+             data.model is string && data.model.size() <= 100 &&
+             data.semester is string && data.semester.size() <= 50 &&
+             data.alokasi is string && data.alokasi.size() <= 50 &&
+             data.content is string && data.content.size() <= 100000 &&
+             data.createdAt is string &&
+             (!data.keys().hasAny(['customDirectives']) || (data.customDirectives is string && data.customDirectives.size() <= 1000));
+    }
+
+    // User Profile Rules
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Profiles are queried individually
+      
+      allow create: if isOwner(userId) && 
+                       isEmailVerified() && 
+                       isValidId(userId) &&
+                       incoming().keys().hasAll(["namaSekolah", "kabupaten", "namaGuru", "nipGuru", "namaKepalaSekolah", "nipKepalaSekolah", "tanggalDokumen"]) &&
+                       (incoming().keys().size() == 7 || (incoming().keys().size() == 8 && incoming().keys().hasAll(["updatedAt"]))) &&
+                       isValidUserProfile(incoming());
+                       
+      allow update: if isOwner(userId) && 
+                       isEmailVerified() && 
+                       isValidUserProfile(incoming());
+                       
+      allow delete: if isOwner(userId) && isEmailVerified();
+
+      // Modul Ajar Sub-collection Rules
+      match /moduls/{modulId} {
+        allow get: if isOwner(userId);
+        
+        allow list: if isOwner(userId);
+        
+        allow create: if isOwner(userId) && 
+                         isEmailVerified() && 
+                         isValidId(modulId) &&
+                         incoming().keys().hasAll(["id", "title", "grade", "materi", "model", "semester", "alokasi", "content", "createdAt"]) &&
+                         (incoming().keys().size() == 9 || (incoming().keys().size() == 10 && incoming().keys().hasAll(["customDirectives"]))) &&
+                         isValidModulAjar(incoming());
+                         
+        allow update: if isOwner(userId) && 
+                         isEmailVerified() && 
+                         isValidModulAjar(incoming()) &&
+                         incoming().id == existing().id &&
+                         incoming().createdAt == existing().createdAt;
+                         
+        allow delete: if isOwner(userId) && isEmailVerified();
+      }
+    }
+  }
+}
